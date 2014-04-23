@@ -1,23 +1,28 @@
-#!/bin/bash 
+#!/bin/bash
 # wordsed: a string replacement tool for docx
 # written by Ryuichi UEDA, Apr. 22, 2014 
-# usage: wordsed <from str> <to str> original.docx > newfile.docx
+# usage: cat original.docx | wordsed <sed command> > newfile.docx
 
 tmp=./tmp-exshell-$$
-mkdir "$tmp" || exit 1
+error () {
+	[ -d "$tmp" ] && rm -Rf "$tmp" && exit 1
+	cd - && [ -d "$tmp" ] && rm -Rf "$tmp"
+	exit 1
+}
 
-cd "$tmp"        &&
-unzip "$3" >&2   || exit 1
+trap error 1 2 3 15
 
-FROM=$(echo "$1" | sed 's;/;\/;g')
-TO=$(echo "$2" | sed 's;/;\/;g')
-
-sed "s/$FROM/$TO/g" word/document.xml > tmp &&
-mv tmp word/document.xml
-
-zip -r tmp.docx * >&2 && cat tmp.docx
-
-cd - >&2 && rm -Rf "$tmp"
+mkdir "$tmp"                             &&
+cd "$tmp"                                &&
+cat < /dev/stdin > "tmp.zip"             &&
+unzip "tmp.zip" >&2                      &&
+rm "tmp.zip"                             &&
+sed "$1" word/document.xml > tmp         &&
+mv tmp word/document.xml                 &&
+zip -r tmp.docx * >&2                    &&
+cat tmp.docx                             &&
+cd - >&2                                 &&
+rm -Rf "$tmp"    || error
 
 #The MIT License
 #
