@@ -2,12 +2,12 @@
 
 usage () {
 	cat <<- FIN >&2
-	ExRead 1.1: read of an excel sheet
+	ExRead Sheet 1.1: read of an excel sheet
 	Thu Apr 24 00:47:00 JST 2014
 
 	Copyright (C) 2014 Ryuichi UEDA
 
-	usage: exread <sheet> original.xlsx
+	usage: exread-sheet <sheet> original.xlsx
 	FIN
 
 	exit 1
