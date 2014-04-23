@@ -1,7 +1,21 @@
 #!/bin/bash
-# wordsed: a string replacement tool for docx
-# written by Ryuichi UEDA, Apr. 22, 2014 
-# usage: cat original.docx | wordsed <sed command> > newfile.docx
+
+usage () {
+	cat <<- FIN >&2
+	WordSed 1.0: a string replacement tool for docx
+	Wed Apr 23 19:24:28 JST 2014
+
+	Copyright (C) 2014 Ryuichi UEDA
+
+	usage1: cat original.docx | wordsed <sed command> > newfile.docx
+	usage2: wordsed <sed command> original.docx > newfile.docx
+	FIN
+
+	exit 1
+}
+
+[ "$1" = "-h" ] && usage
+[ "$1" = "--help" ] && usage
 
 tmp=./tmp-exshell-$$
 error () {
@@ -12,9 +26,12 @@ error () {
 
 trap error 1 2 3 15
 
+inputfile="/dev/stdin"
+[ -f "$2" ] && inputfile="$2"
+
 mkdir "$tmp"                             &&
 cd "$tmp"                                &&
-cat < /dev/stdin > "tmp.zip"             &&
+cat < "$inputfile" > "tmp.zip"           &&
 unzip "tmp.zip" >&2                      &&
 rm "tmp.zip"                             &&
 sed "$1" word/document.xml > tmp         &&
