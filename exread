@@ -1,0 +1,51 @@
+#!/bin/bash
+
+usage () {
+	cat <<- FIN >&2
+	ExRead 1.0: a string replacement tool for docx
+	Wed Apr 23 23:34:39 JST 2014
+
+	Copyright (C) 2014 Ryuichi UEDA
+
+	usage: exread <sheet> original.xlsx
+	FIN
+
+	exit 1
+}
+
+[ "$1" = "-h" ] && usage
+[ "$1" = "--help" ] && usage
+
+unzip -p "$2" "xl/worksheets/$1.xml"		|
+grep -o '<c [^<]*>[^v]*<v>[^<]*</v></c>'	|
+sed 's;><f>[^<]*</f>; t="n">;'			|
+sed 's;<c \(r="[A-Z]*[0-9]*"\)>;<c \1 t="n">;'	|
+sed 's;^<c ;;'					|
+sed 's;</v></c>;;'				|
+sed 's;[frt]=;;g'				|
+sed 's;><v>; ;'					|
+tr -d '"'					|
+sed 's/^[A-Z]*/& /'
+
+exit 0
+#The MIT License
+#
+#Copyright (C) Ryuichi UEDA
+#
+#Permission is hereby granted, free of charge, to any person obtaining a copy
+#of this software and associated documentation files (the "Software"), to deal
+#in the Software without restriction, including without limitation the rights
+#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#copies of the Software, and to permit persons to whom the Software is
+#furnished to do so, subject to the following conditions:
+#
+#The above copyright notice and this permission notice shall be included in
+#all copies or substantial portions of the Software.
+#
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+#THE SOFTWARE.
