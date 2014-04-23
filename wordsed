@@ -41,6 +41,7 @@ cat tmp.docx                             &&
 cd - >&2                                 &&
 rm -Rf "$tmp"    || error
 
+exit 0
 #The MIT License
 #
 #Copyright (C) Ryuichi UEDA
