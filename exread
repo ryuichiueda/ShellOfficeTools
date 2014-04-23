@@ -2,7 +2,7 @@
 
 usage () {
 	cat <<- FIN >&2
-	ExRead 1.0: a string replacement tool for docx
+	ExRead 1.0: read of an excel sheet
 	Wed Apr 23 23:34:39 JST 2014
 
 	Copyright (C) 2014 Ryuichi UEDA
