@@ -27,6 +27,7 @@ sed 's;[frt]=;;g'				|
 sed 's;><v>; ;'					|
 tr -d '"'					|
 sed 's/^[A-Z]*/& /'
+[ "$(echo ${PIPESTATUS[@]} | tr -d '0 ')" = "" ] || exit 1
 
 exit 0
 #The MIT License
