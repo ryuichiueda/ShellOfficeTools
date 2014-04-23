@@ -2,8 +2,8 @@
 
 usage () {
 	cat <<- FIN >&2
-	ExRead 1.0: read of an excel sheet
-	Wed Apr 23 23:34:39 JST 2014
+	ExRead 1.1: read of an excel sheet
+	Thu Apr 24 00:47:00 JST 2014
 
 	Copyright (C) 2014 Ryuichi UEDA
 
@@ -18,7 +18,8 @@ usage () {
 
 unzip -p "$2" "xl/worksheets/$1.xml"		|
 grep -o '<c [^<]*>[^v]*<v>[^<]*</v></c>'	|
-sed 's;><f>[^<]*</f>; t="n">;'			|
+sed 's;><f[^<]*>[^<]*</f>; t="n">;'		|
+sed 's;><f[^<]*/>; t="n">;'			|
 sed 's;<c \(r="[A-Z]*[0-9]*"\)>;<c \1 t="n">;'	|
 sed 's;^<c ;;'					|
 sed 's;</v></c>;;'				|
