@@ -20,7 +20,7 @@ unzip -p "$1" "xl/sharedStrings.xml"	|
 grep -o '<si><t>[^<]*</t>'		|
 sed 's;<si><t>;;'			|
 sed 's;</t>;;'				|
-awk '{print NR,$0}'
+awk '{print NR-1,$0}'
 [ "$(echo ${PIPESTATUS[@]} | tr -d '0 ')" = "" ] || exit 1
 
 exit 0
